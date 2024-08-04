@@ -1,0 +1,33 @@
+{
+    "status": 204,
+    "statusText": "No Content",
+    "headers":  {
+            "date": "Sun, 04 Aug 2024 13:51:18 GMT",
+            "github-authentication-token-expiration": "2024-10-20 14:33:57 +0800",
+            "x-github-media-type": "github.v3; format=json",
+            "x-accepted-github-permissions": "actions=write",
+            "x-github-api-version-selected": "2022-11-28",
+            "x-ratelimit-limit": "5000",
+            "x-ratelimit-remaining": "4998",
+            "x-ratelimit-reset": "1722783076",
+            "x-ratelimit-used": "2",
+            "x-ratelimit-resource": "core",
+            "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+            "access-control-allow-origin": "*",
+            "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+            "x-frame-options": "deny",
+            "x-content-type-options": "nosniff",
+            "x-xss-protection": "0",
+            "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+            "content-security-policy": "default-src 'none'",
+            "vary": "Accept-Encoding, Accept, X-Requested-With",
+            "server": "github.com",
+            "x-github-request-id": "E432:AAAAAA:1C38C8E:1D66F0E:66AF8755"
+        },
+    "body": null,
+    "bodyUsed": false,
+    "ok": true,
+    "redirected": false,
+    "type": "basic",
+    "url": "https://api.github.com/repos/testUser/testRepo/actions/workflows/workflow-filename.yml/dispatches"
+}

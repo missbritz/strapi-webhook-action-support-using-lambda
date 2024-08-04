@@ -1,0 +1,14 @@
+{
+  "name": "strapi-webhook-action-with-lambda",
+  "version": "1.0.0",
+  "description": "Lambda webhook for strapi",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Britta Oblan",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/request": "9.1.3"
+  }
+}
