@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
 
 export const handler = async (event) => {
-  console.log('Received event:', event);
 
   // Destructure and set default values
   const user = event.headers['ghx-user'] || '';
@@ -14,8 +13,8 @@ export const handler = async (event) => {
   const url = `https://api.github.com/repos/${user}/${repo}/actions/workflows/${workflowID}/dispatches`;
   const headers = {
     Accept: 'application/vnd.github.v3+json',
-    Authorization: gtoken, // Added 'Bearer ' prefix for proper format
-    ContentType: 'application/json', // Corrected header key spelling
+    Authorization: gtoken,
+    ContentType: 'application/json',
     'X-GitHub-Api-Version': '2022-11-28'
   };
 
@@ -28,28 +27,31 @@ export const handler = async (event) => {
   try {
     // Make the fetch request to GitHub API
     const response = await fetch(url, { method: 'POST', headers, body });
-    const responseData = await response.json();
 
-    // Check if the response is not ok (status code 2xx)
+    // Ensure the response body exists and is JSON before parsing
+    let responseData = null;
 
-
-    console.log('Response here', response.json)
-
-    if (!responseData.ok) {
+    // Check if the response is not 204 - No Content means empty response
+    // https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
+    if (response.status !== 204) {
+      responseData = await response.json();
       console.error('GitHub API error:', responseData);
-      throw new Error(responseData.message || 'Unknown error occurred');
+      throw new Error(responseData ? responseData.message : 'Unknown error occurred');
     }
 
     console.log('GitHub workflow triggered successfully:', responseData);
+
+    const postGithubHook = responseData === null ? { published: 'success' } : responseData
+
     return {
       statusCode: 200,
-      body: responseData
-    }
+      body: JSON.stringify(postGithubHook)
+    };
   } catch (error) {
     console.error('Error triggering GitHub workflow:', error.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message })
-    }
+    };
   }
 };
