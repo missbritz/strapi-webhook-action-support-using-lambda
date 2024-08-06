@@ -1,5 +1,7 @@
-FROM public.ecr.aws/lamdbda/node.js:20
+FROM public.ecr.aws/lambda/nodejs:20
 
-COPY src/index.js ${LAMBDA_TASK_ROOT}
+COPY src/index.mjs package.json ${LAMBDA_TASK_ROOT}
+
+RUN npm install
 
 CMD ["index.handler"]
