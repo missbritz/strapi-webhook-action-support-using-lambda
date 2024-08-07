@@ -31,9 +31,10 @@ export const handler = async (event) => {
     // Ensure the response body exists and is JSON before parsing
     let responseData = null;
 
+    // Github returns 204 on success which has no JSON to parse
     // Check if the response is not 204 - No Content means empty response
     // https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
-    if (response.status !== 204) {
+    if (response.status !== 204 && !response.ok) {
       responseData = await response.json();
       console.error('GitHub API error:', responseData);
       throw new Error(responseData ? responseData.message : 'Unknown error occurred');
