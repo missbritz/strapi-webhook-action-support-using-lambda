@@ -2,13 +2,23 @@
   "name": "strapi-webhook-action-with-lambda",
   "version": "1.0.0",
   "description": "Lambda webhook for strapi",
-  "main": "src/index.mjs",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "lint": "npx eslint src/"
   },
   "author": "Britta Oblan",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "3.3.2"
+    "isomorphic-fetch": "3.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.8.0",
+    "@types/aws-lambda": "8.10.143",
+    "esbuild": "0.23.0",
+    "eslint": "9.8.0",
+    "globals": "15.9.0",
+    "typescript-eslint": "8.0.1"
   }
 }

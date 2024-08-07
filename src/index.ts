@@ -1,6 +1,7 @@
-import fetch from "node-fetch";
+import 'isomorphic-fetch';
+import { APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
 
   // Destructure and set default values
   const user = event.headers['ghx-user'] || '';
@@ -32,7 +33,6 @@ export const handler = async (event) => {
     let responseData = null;
 
     // Github returns 204 on success which has no JSON to parse
-    // Check if the response is not 204 - No Content means empty response
     // https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
     if (response.status !== 204 && !response.ok) {
       responseData = await response.json();

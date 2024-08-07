@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Main CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # AWS access keys
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Login to AWS
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ap-southeast-1
+      
+      # Login to ECR similar as -> aws ecr get-login-password | docker login --username AWS --password-stdin <ECR URL>
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Build docker image and push to ECR
+      - name: Build, tag and push the Image to Amazon ECR
+        id: build-image
+        env:
+          AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
+          AWS_ECR_REPO: ${{secrets.AWS_ECR_REPO}}
+          IMAGE_TAG: ${{IMAGE_TAG}}
+        run:
+          docker build -t $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG .
+          docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG
+        
+
+
+
+
