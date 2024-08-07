@@ -17,11 +17,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
-    # AWS access keys
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -50,7 +45,7 @@ jobs:
           AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
           AWS_ECR_REPO: ${{secrets.AWS_ECR_REPO}}
           IMAGE_TAG: ${{secrets.IMAGE_TAG}}
-        run:
+        run: |
           docker build -t $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG .
           docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG
         
