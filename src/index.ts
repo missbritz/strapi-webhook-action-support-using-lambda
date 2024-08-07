@@ -25,7 +25,7 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
   const headers = {
     Accept: 'application/vnd.github.v3+json',
     Authorization: gtoken,
-    'Content-Type': 'application/json',
+    ContentType: 'application/json',
     'X-GitHub-Api-Version': '2022-11-28'
   };
 
@@ -34,6 +34,9 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
     ref: branch,
     inputs: {}
   });
+
+  console.log(url)
+  console.log(headers)
 
   try {
     // Make the fetch request to GitHub API
