@@ -1,17 +1,23 @@
 {
-  "name": "strapi-webhook-action-with-lambda",
+  "name": "strapi-github-action-api-with-lambda",
   "version": "1.0.0",
-  "description": "Lambda webhook for strapi",
+  "description": "Github actions support for Strapi webhook using AWS Lambda",
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
     "lint": "npx eslint src/"
   },
+  "engines": {
+    "node": "^20",
+    "npm": "^10"
+  },
   "author": "Britta Oblan",
   "license": "ISC",
   "dependencies": {
-    "isomorphic-fetch": "3.0.0"
+    "@types/node": "22.1.0",
+    "dotenv": "16.4.5"
   },
   "devDependencies": {
     "@eslint/js": "9.8.0",
