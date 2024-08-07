@@ -49,7 +49,7 @@ jobs:
         env:
           AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
           AWS_ECR_REPO: ${{secrets.AWS_ECR_REPO}}
-          IMAGE_TAG: ${{IMAGE_TAG}}
+          IMAGE_TAG: ${{secrets.IMAGE_TAG}}
         run:
           docker build -t $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG .
           docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPO:$IMAGE_TAG
