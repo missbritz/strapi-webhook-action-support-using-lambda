@@ -27,6 +27,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Ensure Docker cache directory exists
+        run: mkdir -p /tmp/.buildx-cache
+
       # Login to AWS
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
