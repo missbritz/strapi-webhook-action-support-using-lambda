@@ -21,7 +21,7 @@ jobs:
       AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
       AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
       IMAGE_NAME: ${{ secrets.IMAGE_TAG }}
       IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
       FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
