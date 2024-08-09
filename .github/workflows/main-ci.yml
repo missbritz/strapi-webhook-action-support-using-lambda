@@ -20,7 +20,6 @@ jobs:
     env:
       AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
       AWS_SECRET_KEY: ${{secrets.AWS_ECR_REGISTRY}}
-      AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
       AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
       AWS_DEFAULT_REGION: ${{secrets.AWS_DEFAULT_REGION}}
       IMAGE_NAME: ${{secrets.IMAGE_TAG}}
@@ -37,9 +36,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-secret-access-key: $AWS_SECRET_KEY
-          aws-access-key-id: $AWS_ACCESS_KEY
-          aws-region: ap-southeast-1
+          aws-secret-access-key: ${{AWS_SECRET_KEY}}
+          aws-access-key-id: ${{AWS_ACCESS_KEY}}
+          aws-region: ${{AWS_DEFAULT_REGION}}
       
       # Login to ECR similar as -> aws ecr get-login-password | docker login --username AWS --password-stdin <ECR URL>
       - name: Login to Amazon ECR
