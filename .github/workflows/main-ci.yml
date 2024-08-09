@@ -55,7 +55,8 @@ jobs:
       # Build docker image and push to ECR
       - name: Build, tag, and push Docker image to Amazon ECR
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 --cache-from=type=local,src=/tmp/.buildx-cache \
+          docker buildx build --platform linux/amd64 \
+            --cache-from=type=local,src=/tmp/.buildx-cache \
             --cache-to=type=local,dest=/tmp/.buildx-cache-new \
             --tag ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} \
             --push .
