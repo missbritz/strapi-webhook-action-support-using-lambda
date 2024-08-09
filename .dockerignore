@@ -48,3 +48,6 @@ Thumbs.db
 
 # Ignore sensitive data files
 secrets/
+
+.prettierignore
+.prettierrc
