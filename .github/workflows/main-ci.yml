@@ -11,6 +11,15 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  IMAGE_NAME: ${{ secrets.IMAGE_TAG }}
+  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+  FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -18,13 +27,13 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-      AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-      IMAGE_NAME: ${{ secrets.IMAGE_TAG }}
-      IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
-      FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+      AWS_ACCESS_KEY: ${{ env.AWS_ACCESS_KEY }}
+      AWS_SECRET_KEY: ${{ env.AWS_SECRET_KEY }}
+      AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
+      AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+      IMAGE_NAME: ${{ env.IMAGE_TAG }}
+      IMAGE_TAG: ${{ env.IMAGE_TAG }}
+      FUNCTION_NAME: ${{ env.LAMBDA_FUNCTION_NAME }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
