@@ -5,7 +5,6 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
     "lint:ts": "npx eslint src/",
     "lint:prettier": "npx prettier --check src --ignore-unknown",
@@ -13,7 +12,7 @@
     "prepare": "husky"
   },
   "engines": {
-    "node": "^20",
+    "node": "^18",
     "npm": "^10"
   },
   "author": "Britta Oblan",
