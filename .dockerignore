@@ -1,0 +1,50 @@
+# Ignore node_modules directory
+node_modules
+
+# Ignore local environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore git and other VCS directories
+.git
+.gitignore
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.lock
+*.pid
+*.swp
+
+# Ignore build directories (e.g., for React, Angular, etc.)
+build/
+dist/
+out/
+
+# Ignore test directories and coverage reports
+tests/
+coverage/
+.coverage
+
+# Ignore editor and OS-specific files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+
+# Ignore package-lock or yarn.lock if using the other
+# Uncomment the line that applies to your project
+# package-lock.json
+# yarn.lock
+
+# Ignore sensitive data files
+secrets/
