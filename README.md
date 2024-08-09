@@ -1,5 +1,5 @@
 # strapi-webhook-action-with-lambda
-A simple and lightweight api proxy for strapi deployed as a Lambda function that will trigger Github action's workflow dispatch event.
+A simple and lightweight node.js api built for lambda to add support Strapi webhook that will trigger Github action's workflow dispatch event.
 
 ##### Prerequisite
 - Docker
