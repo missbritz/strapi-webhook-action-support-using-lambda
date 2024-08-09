@@ -11,29 +11,13 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-  IMAGE_NAME: ${{ secrets.IMAGE_TAG }}
-  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
-  FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY: ${{ env.AWS_ACCESS_KEY }}
-      AWS_SECRET_KEY: ${{ env.AWS_SECRET_KEY }}
-      AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
-      AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
-      IMAGE_NAME: ${{ env.IMAGE_TAG }}
-      IMAGE_TAG: ${{ env.IMAGE_TAG }}
-      FUNCTION_NAME: ${{ env.LAMBDA_FUNCTION_NAME }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -45,9 +29,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-secret-access-key: $AWS_SECRET_KEY
-          aws-access-key-id: $AWS_ACCESS_KEY
-          aws-region: $AWS_DEFAULT_REGION
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       
       # Login to ECR similar as -> aws ecr get-login-password | docker login --username AWS --password-stdin <ECR URL>
       - name: Login to Amazon ECR
@@ -57,16 +41,25 @@ jobs:
       # Build docker image and push to ECR
       - name: Build, tag and push the Image to Amazon ECR
         id: build-image
+        env:
+          AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
+          IMAGE_NAME: ${{secrets.IMAGE_NAME}}
+          IMAGE_TAG: ${{secrets.IMAGE_TAG}}
         run: |
-          docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG} .
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
+          docker build -t $AWS_ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $AWS_ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
       
       # Update lambda function with latest ECR
       - name: update
+        env:
+          AWS_ECR_REGISTRY: ${{secrets.AWS_ECR_REGISTRY}}
+          IMAGE_NAME: ${{secrets.IMAGE_NAME}}
+          IMAGE_TAG: ${{secrets.IMAGE_TAG}}
+          FUNCTION_NAME: ${{secrets.LAMBDA_FUNCTION_NAME}}
         run: |
           aws lambda update-function-code \
               --function-name ${FUNCTION_NAME} \
-              --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
+              --image-uri $AWS_ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
         
 
 
