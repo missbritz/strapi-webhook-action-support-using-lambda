@@ -13,8 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a single job called "build-and-deploy"
+  build-and-deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -27,16 +27,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Ensure Docker cache directory exists
+      # Ensure folder is created
+      - name: Create Cache Directory
         run: mkdir -p /tmp/.buildx-cache
-
-      # Login to AWS
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       # Cache docker layers for reuse
       - name: Cache Docker layers
@@ -46,10 +39,17 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      
-      # Login to ECR similar as -> aws ecr get-login-password | docker login --username AWS --password-stdin <ECR URL>
+
+      # Login to AWS
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+       # Login to ECR similar as -> aws ecr get-login-password | docker login --username AWS --password-stdin <ECR URL>
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       # Build docker image and push to ECR
@@ -59,18 +59,11 @@ jobs:
             --cache-to=type=local,dest=/tmp/.buildx-cache-new \
             --tag ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} \
             --push .
-          docker tag ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} \
-            ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      
+
       # Update lambda function with latest image pushed in ECR
       - name: Update Lambda function with latest ECR image
         run: |
           aws lambda update-function-code \
             --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
             --image-uri ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
-        
-
-
-
-
