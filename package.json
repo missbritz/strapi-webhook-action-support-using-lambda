@@ -1,0 +1,39 @@
+{
+  "name": "strapi-github-action-api-with-lambda",
+  "version": "1.0.0",
+  "description": "Github actions support for Strapi webhook using AWS Lambda",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "lint:ts": "npx eslint src/",
+    "lint:prettier": "npx prettier --check src --ignore-unknown",
+    "lint:fix": "npx lint:prettier --write && npx lint:ts --fix",
+    "prepare": "husky"
+  },
+  "engines": {
+    "node": "^18",
+    "npm": "^10"
+  },
+  "author": "Britta Oblan",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "22.1.0",
+    "dotenv": "16.4.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.8.0",
+    "@types/aws-lambda": "8.10.143",
+    "esbuild": "0.23.0",
+    "eslint": "9.8.0",
+    "eslint-config-prettier": "9.1.0",
+    "globals": "15.9.0",
+    "husky": "9.1.4",
+    "lint-staged": "15.2.8",
+    "prettier": "3.3.3",
+    "typescript-eslint": "8.0.1"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "prettier --write"
+  }
+}
